@@ -4,8 +4,8 @@ import openai
 import requests
 import os
 import time
-from newtools import tools
-from newfunctions import *
+from tools2 import tools
+from functions2 import *
 import json
 import base64
 from dotenv import load_dotenv
