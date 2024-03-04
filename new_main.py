@@ -94,10 +94,7 @@ function_dispatch_table = {
 
 
 assistant_id = "asst_kcijOKWplEtKqVuk1QMgSpX0"  # Use your actual assistant ID
-my_updated_assistant = client.beta.assistants.update(
-   assistant_id,
-   tools=tools
-)
+
 query = ""
 thread = client.beta.threads.create()
 client.beta.threads.messages.create(
