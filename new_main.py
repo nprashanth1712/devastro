@@ -1,5 +1,6 @@
 #importing dependices
 from openai import OpenAI
+import openai
 import requests
 import os
 import time
@@ -7,8 +8,14 @@ from newtools import tools
 from newfunctions import *
 import json
 import base64
+from dotenv import load_dotenv
+load_dotenv()
 
-client = OpenAI(api_key="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")
+api_key = os.getenv('OPENAI_API_KEY')
+if not api_key:
+    raise ValueError('OPENAI_API_KEY environment variable not set')
+
+client = OpenAI(api_key=api_key)
 OPEN_CAGE_API_KEY = os.getenv('OPEN_CAGE_API_KEY', 'c6c63b92ad744d7da3c74f471670e8e7')
 ASTRO_API_KEY = os.getenv('ASTRO_API_KEY', 'dfa2b8e6-d4f5-584a-b08c-e0a1e0150047')
 
