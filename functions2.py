@@ -1,5 +1,4 @@
 import requests
-from IPython.display import display,SVG
 import json
 import base64
 
