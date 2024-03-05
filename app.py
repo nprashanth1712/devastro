@@ -6,9 +6,12 @@ import time
 from dotenv import load_dotenv
 from newtools_v1 import tools
 from functions2_v1 import *
-#from functions2 import call_antardasha_api,call_kaalsarp_dosh_api,call_mahadasha_api,call_mahadasha_predictions_api,call_mangal_dosh_api,call_manglik_dosh_api,call_papasamaya_api,call_pitra_dosh_api,current_sade_sati,get_ex_horo,gem_suggestion,get_ascendant_report,get_astro_dashas,get_astro_dosh,get_char_dasha_current,get_char_dasha_main,get_char_dasha_sub,get_current_mahadasha,get_current_mahadasha_full,get_horo,get_paryantar_dasha,get_planet_details,get_planet_report,get_yogini_dasha_main,friendship_table,sade_sati_table,find_ascendant,find_moon_sign,find_sun_sign,kp_houses,kp_planets,extended_kundli_details,rudraksh_suggestion,varshapal_details,varshapal_month_chart,varshapal_year_chart,get_specific_dasha,get_aggregate_match,get_ashtakoot_with_astro_details,get_choghadiya_muhurta,get_dashakoot_match,get_dashakoot_with_astro_details,get_monthly_panchang,get_moon_calendar,get_moon_phase,get_moon_rise,get_moon_set,get_nakshatra_match,get_panchang,get_papasamaya_match,get_rajju_vedha_details,get_retrogrades,get_solar_noon,get_sun_rise,get_sun_set,get_ashtakoot_match,get_hora_muhurta,get_personal_characteristics
+from werkzeug.exceptions import BadRequest, InternalServerError
 import json
 import base64
+import logging
+
+
 
 load_dotenv()
 
@@ -18,6 +21,8 @@ if not api_key:
 
 client = OpenAI(api_key=api_key)
 ASTRO_API_KEY = os.getenv('ASTRO_API_KEY', 'dfa2b8e6-d4f5-584a-b08c-e0a1e0150047')
+
+logging.basicConfig(level=logging.INFO)
 
 tools = tools
 
@@ -172,18 +177,31 @@ def your_main_function(user_query):
 app = Flask(__name__)
 
 
-@app.route('/', methods=['POST'])
+@app.route('/api/query', methods=['POST'])
 def handle_query():
     try:
         data = request.json
-        user_query = data.get('query')
-        if user_query:
-            response = your_main_function(user_query)
-            return jsonify({'response': response})
-        else:
-            return jsonify({'error': 'No query provided'}), 400
+        # Validate input data
+        if not data or 'query' not in data:
+            raise BadRequest('No query provided')
+        user_query = data['query']
+        response = your_main_function(user_query)
+        return jsonify({'response': response})
+    except BadRequest as e:
+        logging.error(f"BadRequest error: {e}")
+        return jsonify({'error': str(e)}), 400
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        logging.error(f"Internal server error: {e}")
+        return jsonify({'error': 'Internal server error'}), 500
+    
+@app.errorhandler(400)
+def bad_request_error(e):
+    return jsonify({'error': 'Bad request', 'message': str(e)}), 400
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    return jsonify({'error': 'Internal server error', 'message': 'An unexpected error occurred'}), 500
+
 
 
 
