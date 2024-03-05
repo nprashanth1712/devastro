@@ -324,10 +324,28 @@ def get_retrogrades(year,planet):
         return None
     
 #predictions
-def get_daily(typ,zodic,date):
-    base_url = f"https://api.vedicastroapi.com/v3-json/prediction/{typ}"
+def get_daily_sun(zodiac,date):
+    base_url = f"https://api.vedicastroapi.com/v3-json/prediction/daily-sun"
     params = {
-        "zodic": zodic,
+        "zodiac": zodiac,
+        "date": date,
+        "api_key": ASTRO_API_KEY,
+        "lang": "en",
+        "split": "true",
+        "type":"big",
+        "show_same":"true"
+    }
+    try:
+        response = requests.get(base_url, params=params)
+        response.raise_for_status()  # Raises HTTPError for 4xx and 5xx responses
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"Error calling API: {e}")
+        return None
+def get_daily_moon(zodiac,date):
+    base_url = f"https://api.vedicastroapi.com/v3-json/prediction/daily-moon"
+    params = {
+        "zodiac": zodiac,
         "date": date,
         "api_key": ASTRO_API_KEY,
         "lang": "en",
@@ -340,15 +358,12 @@ def get_daily(typ,zodic,date):
     except requests.exceptions.RequestException as e:
         print(f"Error calling API: {e}")
         return None
-    
-def get_daily_sun(zodic,date):
-    return get_daily('daily-sun',zodic,date,split='true',type='big')
-def get_daily_moon(zodic,date):
-    return get_daily('daily-moon',zodic,date)
-def get_week(typ1,zodic,week):
+
+
+def get_week(typ1,zodiac,week):
     base_url = f"https://api.vedicastroapi.com/v3-json/prediction/{typ1}"
     params = {
-        "zodic": zodic,
+        "zodiac": zodiac,
         "week": week,
         "api_key": ASTRO_API_KEY,
         "lang": "en",
@@ -362,10 +377,10 @@ def get_week(typ1,zodic,week):
     except requests.exceptions.RequestException as e:
         print(f"Error calling API: {e}")
         return None
-def get_weekly_sun(zodic,week):
-    return get_week('weekly-sun',zodic,week)
-def get_weekly_moon(zodic,week):
-    return get_week('weekly-moon',zodic,week)
+def get_weekly_sun(zodiac,week):
+    return get_week('weekly-sun',zodiac,week)
+def get_weekly_moon(zodiac,week):
+    return get_week('weekly-moon',zodiac,week)
 def get_daily_nakshatra(nakshatra,date):
     base_url = f"https://api.vedicastroapi.com/v3-json/prediction/daily-nakshatra"
     params = {
