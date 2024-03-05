@@ -172,7 +172,7 @@ def your_main_function(user_query):
 app = Flask(__name__)
 
 
-@app.route('/api/query', methods=['POST'])
+@app.route('/', methods=['POST'])
 def handle_query():
     try:
         data = request.json
