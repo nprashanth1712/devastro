@@ -2498,7 +2498,10 @@ def your_main_function(user_query):
             time.sleep(1)
 
 
-app = Flask(_name_)
+from flask import Flask, request, Response
+import json
+
+app = Flask(__name__)
 
 @app.route('/', methods=['POST'])
 def handle_query():
@@ -2506,19 +2509,17 @@ def handle_query():
     user_query = data.get('query')
     if user_query:
         response = your_main_function(user_query) # Call your main function with the user query
-        # Convert the response to a JSON string using json.dumps()
-        response_json = json.dumps({'response': response})
-        return response_json, 200, {'Content-Type': 'application/json'}
+        # Using json.dumps to create a JSON response string
+        response_data = json.dumps({'response': response})
+        return Response(response_data, mimetype='application/json')
     else:
-        error_json = json.dumps({'error': 'No query provided'})
-        return error_json, 400, {'Content-Type': 'application/json'}
-
-"""if _name_ == '_main_':
-    app.run(debug=True, use_reloader=False)
-    """
+        # Using json.dumps for the error response as well
+        error_response_data = json.dumps({'error': 'No query provided'})
+        return Response(error_response_data, mimetype='application/json', status=400)
 
 
 
 if __name__ == '__main__':
+    app.run(debug=True, use_reloader=False)
     from gunicorn.app.wsgiapp import WSGIApplication
     WSGIApplication("%(application)s").run()
