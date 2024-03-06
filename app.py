@@ -2420,10 +2420,10 @@ function_dispatch_table = {
 }
 
 assistant_id = "asst_Rr5fZne22yP1TWUIoUzp2OKn" 
-my_updated_assistant = client.beta.assistants.update(
+"""my_updated_assistant = client.beta.assistants.update(
    assistant_id,
    tools=tools
-)
+)"""
 
 def your_main_function(user_query):
 
