@@ -2498,12 +2498,12 @@ def your_main_function(user_query):
             time.sleep(1)
 
 
-
+@app.route('/', methods=['POST'])
+from flask import Flask, Response
+import json
 
 app = Flask(__name__)
 
-
-@app.route('/', methods=['POST'])
 def handle_query():
     try:
         data = request.json
@@ -2512,22 +2512,21 @@ def handle_query():
             raise BadRequest('No query provided')
         user_query = data['query']
         response = your_main_function(user_query)
-        return response(json.dumps(response), mimetype='application/json')
+        return Response(json.dumps(response), mimetype='application/json')
     except BadRequest as e:
         logging.error(f"BadRequest error: {e}")
-        return jsonify({'error': str(e)}), 400
+        return Response(json.dumps({'error': str(e)}), mimetype='application/json'), 400
     except Exception as e:
         logging.error(f"Internal server error: {e}")
-        return jsonify({'error': 'Internal server error'}), 500
-    
+        return Response(json.dumps({'error': 'Internal server error'}), mimetype='application/json'), 500
+
 @app.errorhandler(400)
 def bad_request_error(e):
-    return jsonify({'error': 'Bad request', 'message': str(e)}), 400
+    return Response(json.dumps({'error': 'Bad request', 'message': str(e)}), mimetype='application/json'), 400
 
 @app.errorhandler(500)
 def internal_server_error(e):
-    return jsonify({'error': 'Internal server error', 'message': 'An unexpected error occurred'}), 500
-
+    return Response(json.dumps({'error': 'Internal server error', 'message': 'An unexpected error occurred'}), mimetype='application/json'), 500
 
 
 
