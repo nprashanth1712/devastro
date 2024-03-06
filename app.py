@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response
 from openai import OpenAI
 import requests
 import os
@@ -2499,8 +2499,6 @@ def your_main_function(user_query):
 
 
 @app.route('/', methods=['POST'])
-from flask import Flask, Response
-import json
 
 app = Flask(__name__)
 
