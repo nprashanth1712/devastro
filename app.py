@@ -2512,7 +2512,7 @@ def handle_query():
             raise BadRequest('No query provided')
         user_query = data['query']
         response = your_main_function(user_query)
-        return jsonify({'response': response})
+        return Response(json.dumps(response), mimetype='application/json')
     except BadRequest as e:
         logging.error(f"BadRequest error: {e}")
         return jsonify({'error': str(e)}), 400
