@@ -2498,33 +2498,24 @@ def your_main_function(user_query):
             time.sleep(1)
 
 
+app = Flask(_name_)
+
 @app.route('/', methods=['POST'])
-
-app = Flask(__name__)
-
 def handle_query():
-    try:
-        data = request.json
-        # Validate input data
-        if not data or 'query' not in data:
-            raise BadRequest('No query provided')
-        user_query = data['query']
-        response = your_main_function(user_query)
-        return Response(json.dumps(response), mimetype='application/json')
-    except BadRequest as e:
-        logging.error(f"BadRequest error: {e}")
-        return Response(json.dumps({'error': str(e)}), mimetype='application/json'), 400
-    except Exception as e:
-        logging.error(f"Internal server error: {e}")
-        return Response(json.dumps({'error': 'Internal server error'}), mimetype='application/json'), 500
+    data = request.json
+    user_query = data.get('query')
+    if user_query:
+        response = your_main_function(user_query) # Call your main function with the user query
+        # Convert the response to a JSON string using json.dumps()
+        response_json = json.dumps({'response': response})
+        return response_json, 200, {'Content-Type': 'application/json'}
+    else:
+        error_json = json.dumps({'error': 'No query provided'})
+        return error_json, 400, {'Content-Type': 'application/json'}
 
-@app.errorhandler(400)
-def bad_request_error(e):
-    return Response(json.dumps({'error': 'Bad request', 'message': str(e)}), mimetype='application/json'), 400
-
-@app.errorhandler(500)
-def internal_server_error(e):
-    return Response(json.dumps({'error': 'Internal server error', 'message': 'An unexpected error occurred'}), mimetype='application/json'), 500
+"""if _name_ == '_main_':
+    app.run(debug=True, use_reloader=False)
+    """
 
 
 
