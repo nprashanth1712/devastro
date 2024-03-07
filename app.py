@@ -1,9 +1,11 @@
-from flask import Flask, request, jsonify, Response
+#from flask import Flask, request, jsonify, Response
+from flask import Flask, request, Response, session,jsonify
 from openai import OpenAI
 import requests
 import os
 import time
 from dotenv import load_dotenv
+import secrets
 #from newtools_v1 import tools
 #from functions2_v1 import *
 from werkzeug.exceptions import BadRequest, InternalServerError
@@ -2639,56 +2641,45 @@ function_dispatch_table = {
 }
 
 assistant_id = "asst_Rr5fZne22yP1TWUIoUzp2OKn" 
-"""my_updated_assistant = client.beta.assistants.update(
+my_updated_assistant = client.beta.assistants.update(
    assistant_id,
    tools=tools
-)"""
+)
 
-def your_main_function(user_query):
+app = Flask(__name__)
+app.secret_key = secrets.token_hex(16) 
+# Setting a secret key for session management  store secret keys in environment variables or secure configuration files that are not included in the source code repository.
 
-    query = user_query
+def create_new_thread():
     thread = client.beta.threads.create()
+    return thread.id
+
+def your_main_function(user_query, thread_id):
     client.beta.threads.messages.create(
-        thread_id=thread.id,
+        thread_id=thread_id,
         role="user",
-        content=query
+        content=user_query
     )
 
     run = client.beta.threads.runs.create(
-        thread_id=thread.id,
+        thread_id=thread_id,
         assistant_id=assistant_id
     )
 
     while True:
         run_status = client.beta.threads.runs.retrieve(
-            thread_id=thread.id,
+            thread_id=thread_id,
             run_id=run.id
         )
 
         if run_status.status == 'completed':
-            messages = client.beta.threads.messages.list(thread_id=thread.id)
+            messages = client.beta.threads.messages.list(thread_id=thread_id)
             latest_message = messages.data[0]
             text = latest_message.content[0].text.value
             return text
-            '''
-            user_input = input()
-            if user_input.lower() == "stop":
-                break
-            client.beta.threads.messages.create(
-                thread_id=thread.id,
-                role="user",
-                content=user_input
-            )
-
-            run = client.beta.threads.runs.create(
-                thread_id=thread.id,
-                assistant_id=assistant_id
-            )'''
 
         elif run_status.status == 'requires_action':
-            #print("Requires action")
             required_actions = run_status.required_action.submit_tool_outputs.model_dump()
-            #print(required_actions)
             tools_output = []
 
             for action in required_actions["tool_calls"]:
@@ -2707,36 +2698,28 @@ def your_main_function(user_query):
                     print(f"Function {func_name} not found")
 
             client.beta.threads.runs.submit_tool_outputs(
-                thread_id=thread.id,
+                thread_id=thread_id,
                 run_id=run.id,
                 tool_outputs=tools_output
             )
 
         else:
-            #print("Waiting for the Assistant to process...")
             time.sleep(1)
-
-
-from flask import Flask, request, Response
-import json
-
-app = Flask(__name__)
 
 @app.route('/', methods=['POST'])
 def handle_query():
     data = request.json
     user_query = data.get('query')
     if user_query:
-        response = your_main_function(user_query) # Call your main function with the user query
-        # Using json.dumps to create a JSON response string
+        if 'thread_id' not in session:
+            session['thread_id'] = create_new_thread()
+
+        response = your_main_function(user_query, session['thread_id'])
         response_data = json.dumps({'response': response})
         return Response(response_data, mimetype='application/json')
     else:
-        # Using json.dumps for the error response as well
         error_response_data = json.dumps({'error': 'No query provided'})
         return Response(error_response_data, mimetype='application/json', status=400)
-
-
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=False)
