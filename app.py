@@ -10,7 +10,7 @@ from werkzeug.exceptions import BadRequest, InternalServerError
 import json
 import base64
 import logging
-
+from IPython import display, SVG
 tools = [
     {
         "type": "function",
@@ -418,6 +418,7 @@ tools = [
             }
         }
     },
+
     {
         "type": "function",
         "function": {
@@ -613,6 +614,35 @@ tools = [
         "function": {
             "name": "extended_kundli_details",
             "description": "Fetches extended Kundli details based on birth details.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "dob": {
+                        "type": "string",
+                        "description": "Date of Birth - DD/MM/YYYY"
+                    },
+                    "tob": {
+                        "type": "string",
+                        "description": "Time of Birth - HH:MM"
+                    },
+                    "lat": {
+                        "type": "number",
+                        "description": "Latitude with decimals"
+                    },
+                    "lon": {
+                        "type": "number",
+                        "description": "Longitude with decimals"
+                    }
+                },
+                "required": ["dob", "tob", "lat", "lon"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_chart_img",
+            "description": "Fetches chart image of the Kundli based on birth details.",
             "parameters": {
                 "type": "object",
                 "properties": {
@@ -1026,6 +1056,109 @@ tools = [
                     }
                 },
                 "required": ["dob", "tob", "lat", "lon"]
+            }
+        }
+    },
+    {"type": "function",
+        "function": {
+            "name": "get_ashtakvarga",
+            "description": "Retrieve Ashtakvarga information from a birth chart.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "dob": {
+                        "type": "string",
+                        "description": "Date of Birth - DD/MM/YYYY"
+                    },
+                    "tob": {
+                        "type": "string",
+                        "description": "Time of Birth - HH:MM"
+                    },
+                    "lat": {
+                        "type": "number",
+                        "description": "Latitude with decimals"
+                    },
+                    "lon": {
+                        "type": "number",
+                        "description": "Longitude with decimals"
+                    }
+                },
+                "required": ["dob", "tob", "lat", "lon"]
+            }
+        }
+
+    },
+    
+    {
+        "type": "function",
+        "function": {
+           "name": "get_binnashtakvarga",
+           "description": "Retrieve Binnashtakvarga information from a birth chart.",
+           "parameters": {
+               "type": "object",
+               "properties": {
+                    "dob": {
+                      "type": "string",
+                      "description": "Date of Birth - DD/MM/YYYY"
+                    },
+                    "tob": {
+                      "type": "string",
+                      "description": "Time of Birth - HH:MM"
+                    },
+                   "lat": {
+                      "type": "number",
+                      "description": "Latitude with decimals"
+                    },
+                   "lon": {
+                       "type": "number",
+                       "description": "Longitude with decimals"
+                    },
+                   "planet": {
+                        "type": "string",
+                        "description": "Planet for Binnashtakvarga report",
+                        "enum": [
+                           "Sun",
+                           "Moon",
+                           "Mercury",
+                           "Venus",
+                           "Mars",
+                           "Saturn",
+                           "Jupiter",
+                            "Rahu",
+                            "Ketu"
+                        ]
+                    }
+                },
+                "required": ["dob", "tob", "lat", "lon", "planet"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_western_planets",
+            "description": "Retrieve information on the positions of planets in the Western astrological system from a birth chart.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "dob": {
+                       "type": "string",
+                       "description": "Date of Birth - DD/MM/YYYY"
+                    },
+                    "tob": {
+                       "type": "string",
+                       "description": "Time of Birth - HH:MM"
+                    },
+                    "lat": {
+                       "type": "number",
+                       "description": "Latitude with decimals"
+                    },
+                    "lon": {
+                       "type": "number",
+                       "description": "Longitude with decimals"
+                    }
+                },
+                 "required": ["dob", "tob", "lat", "lon"]
             }
         }
     },
@@ -1876,9 +2009,6 @@ tools = [
 
 
 
-import requests
-import json
-import base64
 
 ASTRO_API_KEY = "dfa2b8e6-d4f5-584a-b08c-e0a1e0150047"
 
@@ -2335,6 +2465,91 @@ def get_nakshatra_vastu_details(nakshatra):
         return None
 
 
+def get_chart_img(dob, tob, lat, lon):
+    base_url = "https://api.vedicastroapi.com/v3-json/horoscope/chart-image"
+    params = {
+        "dob": dob,
+        "tob": tob,
+        "lat": lat,
+        "lon": lon,
+        "div": "D1",
+        "style": "north",
+        "color": "#ff3366",
+        "font_size":7,
+        "size":210,
+        "stroke":2,
+        "tz": 5.5,
+        "api_key": ASTRO_API_KEY,
+        "lang": "en"
+    }
+    try:
+        response = requests.get(base_url, params=params)
+        response.raise_for_status() # Raises HTTPError for 4xx and 5xx responses
+        # Directly display the SVG content
+        display(SVG(data=response.content))
+    except requests.exceptions.RequestException as e:
+        print(f"An error occurred: {e}")
+        print(f"Response status code: {response.status_code}")
+        print(f"Response content: {response.text}")
+
+
+def get_ashtakvarga(dob,tob,lat,lon):
+    base_url = "https://api.vedicastroapi.com/v3-json/horoscope/ashtakvarga"
+    params = {
+        "dob": dob,
+        "tob": tob,
+        "lat": lat,
+        "lon": lon,
+        "tz": 5.5,
+        "api_key": ASTRO_API_KEY,
+        "lang": "en"
+    }
+    try:
+        response = requests.get(base_url, params=params)
+        response.raise_for_status()  # Raises HTTPError for 4xx and 5xx responses
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"Error calling API: {e}")
+        return None
+
+def get_binnashtakvarga(dob,tob,lat,lon,planet):
+    base_url = "https://api.vedicastroapi.com/v3-json/horoscope/binnashtakvarga"
+    params = {
+        "dob": dob,
+        "tob": tob,
+        "lat": lat,
+        "lon": lon,
+        "tz": 5.5,
+        "api_key": ASTRO_API_KEY,
+        "lang": "en",
+        "planet":planet
+    }
+    try:
+        response = requests.get(base_url, params=params)
+        response.raise_for_status()  # Raises HTTPError for 4xx and 5xx responses
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"Error calling API: {e}")
+        return None
+def get_western_planets(dob,tob,lat,lon):
+    base_url = "https://api.vedicastroapi.com/v3-json/horoscope/western-planets"
+    params = {
+        "dob": dob,
+        "tob": tob,
+        "lat": lat,
+        "lon": lon,
+        "tz": 5.5,
+        "api_key": ASTRO_API_KEY,
+        "lang": "en"
+    }
+    try:
+        response = requests.get(base_url, params=params)
+        response.raise_for_status()  # Raises HTTPError for 4xx and 5xx responses
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"Error calling API: {e}")
+        return None
+
 
 
 
@@ -2415,7 +2630,11 @@ function_dispatch_table = {
     "get_yearly":get_yearly,
     "get_biorythm":get_biorythm,
     "get_gem_details":get_gem_details,
-    "get_nakshatra_vastu_details":get_nakshatra_vastu_details
+    "get_nakshatra_vastu_details":get_nakshatra_vastu_details,
+    "get_western_planets":get_western_planets,
+    "get_binnashtakvarga":get_binnashtakvarga,
+    "get_ashtakvarga":get_ashtakvarga,
+    "get_chart_img":get_chart_img
 
 }
 
