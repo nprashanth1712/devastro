@@ -405,6 +405,7 @@ tools = [
             }
         }
     },
+
     {
         "type": "function",
         "function": {
@@ -600,6 +601,35 @@ tools = [
         "function": {
             "name": "extended_kundli_details",
             "description": "Fetches extended Kundli details based on birth details.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "dob": {
+                        "type": "string",
+                        "description": "Date of Birth - DD/MM/YYYY"
+                    },
+                    "tob": {
+                        "type": "string",
+                        "description": "Time of Birth - HH:MM"
+                    },
+                    "lat": {
+                        "type": "number",
+                        "description": "Latitude with decimals"
+                    },
+                    "lon": {
+                        "type": "number",
+                        "description": "Longitude with decimals"
+                    }
+                },
+                "required": ["dob", "tob", "lat", "lon"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_chart_img",
+            "description": "Fetches chart image of the Kundli based on birth details.",
             "parameters": {
                 "type": "object",
                 "properties": {
@@ -1013,6 +1043,109 @@ tools = [
                     }
                 },
                 "required": ["dob", "tob", "lat", "lon"]
+            }
+        }
+    },
+    {"type": "function",
+        "function": {
+            "name": "get_ashtakvarga",
+            "description": "Retrieve Ashtakvarga information from a birth chart.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "dob": {
+                        "type": "string",
+                        "description": "Date of Birth - DD/MM/YYYY"
+                    },
+                    "tob": {
+                        "type": "string",
+                        "description": "Time of Birth - HH:MM"
+                    },
+                    "lat": {
+                        "type": "number",
+                        "description": "Latitude with decimals"
+                    },
+                    "lon": {
+                        "type": "number",
+                        "description": "Longitude with decimals"
+                    }
+                },
+                "required": ["dob", "tob", "lat", "lon"]
+            }
+        }
+
+    },
+    
+    {
+        "type": "function",
+        "function": {
+           "name": "get_binnashtakvarga",
+           "description": "Retrieve Binnashtakvarga information from a birth chart.",
+           "parameters": {
+               "type": "object",
+               "properties": {
+                    "dob": {
+                      "type": "string",
+                      "description": "Date of Birth - DD/MM/YYYY"
+                    },
+                    "tob": {
+                      "type": "string",
+                      "description": "Time of Birth - HH:MM"
+                    },
+                   "lat": {
+                      "type": "number",
+                      "description": "Latitude with decimals"
+                    },
+                   "lon": {
+                       "type": "number",
+                       "description": "Longitude with decimals"
+                    },
+                   "planet": {
+                        "type": "string",
+                        "description": "Planet for Binnashtakvarga report",
+                        "enum": [
+                           "Sun",
+                           "Moon",
+                           "Mercury",
+                           "Venus",
+                           "Mars",
+                           "Saturn",
+                           "Jupiter",
+                            "Rahu",
+                            "Ketu"
+                        ]
+                    }
+                },
+                "required": ["dob", "tob", "lat", "lon", "planet"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_western_planets",
+            "description": "Retrieve information on the positions of planets in the Western astrological system from a birth chart.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "dob": {
+                       "type": "string",
+                       "description": "Date of Birth - DD/MM/YYYY"
+                    },
+                    "tob": {
+                       "type": "string",
+                       "description": "Time of Birth - HH:MM"
+                    },
+                    "lat": {
+                       "type": "number",
+                       "description": "Latitude with decimals"
+                    },
+                    "lon": {
+                       "type": "number",
+                       "description": "Longitude with decimals"
+                    }
+                },
+                 "required": ["dob", "tob", "lat", "lon"]
             }
         }
     },
