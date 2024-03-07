@@ -21,4 +21,4 @@ gunicorn==21.2.0
 Flask==3.0.2
 Flask-Validator==1.4.2
 Werkzeug==3.0.1
-IPython==8.20.0
+ipython==8.20.0
