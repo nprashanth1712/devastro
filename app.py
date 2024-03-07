@@ -10,7 +10,7 @@ from werkzeug.exceptions import BadRequest, InternalServerError
 import json
 import base64
 import logging
-from IPython import display, SVG
+from IPython.display import display, SVG
 tools = [
     {
         "type": "function",
