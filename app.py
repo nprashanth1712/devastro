@@ -4,7 +4,7 @@ from openai import OpenAI
 import requests
 import os
 import time
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 import secrets
 #from newtools_v1 import tools
 #from functions2_v1 import *
@@ -609,26 +609,6 @@ tools = [
                     }
                 },
                 "required": ["dob", "tob", "lat", "lon"]
-            }
-        }
-    },
-    {
-       "type": "function",
-       "function": {
-           "name": "get_current_date_time",
-           "description": "Fetches the current date and time.",
-           "returns": {
-                "type": "object",
-                "properties": {
-                   "current_date": {
-                      "type": "string",
-                      "description": "Current Date - DD/MM/YYYY"
-                    },
-                    "current_time": {
-                      "type": "string",
-                      "description": "Current Time - HH:MM"
-                    }
-                }
             }
         }
     },
@@ -2037,11 +2017,11 @@ ASTRO_API_KEY = "dfa2b8e6-d4f5-584a-b08c-e0a1e0150047"
 
 
 
-def get_current_date_time():
+"""def get_current_date_time():
     now = datetime.now()
     current_date = now.strftime("%d/%m/%Y")
     current_time = now.strftime("%H:%M")
-    return current_date, current_time
+    return current_date, current_time"""
 
 
 def get_astro_dosh(dosh_type, dob, tob, lat, lon):
@@ -2663,7 +2643,6 @@ function_dispatch_table = {
     "get_binnashtakvarga":get_binnashtakvarga,
     "get_ashtakvarga":get_ashtakvarga,
     "get_chart_img":get_chart_img,
-    "get_current_date_time":get_current_date_time
 
 }
 
