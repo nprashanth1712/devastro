@@ -88,15 +88,14 @@ function_dispatch_table = {
     "get_gem_details":get_gem_details,
     "get_nakshatra_vastu_details":get_nakshatra_vastu_details,
     "get_current_date_time":get_current_date_time
-    
-
-
-
     # Add other functions here as needed
 }
 
 assistant_id = "asst_kcijOKWplEtKqVuk1QMgSpX0"  # Use your actual assistant ID
-
+my_updated_assistant = client.beta.assistants.update(
+   assistant_id,
+   tools=tools
+)
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16) 
