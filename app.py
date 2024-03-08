@@ -8,7 +8,6 @@ from flask import Flask, request, Response, session
 from functions2 import *
 import json
 import secrets
-from 
 import base64
 from dotenv import load_dotenv
 
