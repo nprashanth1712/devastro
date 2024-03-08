@@ -3,9 +3,9 @@ from openai import OpenAI
 import requests
 import os
 import time
-from newtools_v1 import tools
+from tools2 import tools
 from flask import Flask, request, Response, session
-from functions2_v1 import *
+from functions2 import *
 import json
 import secrets
 from 
