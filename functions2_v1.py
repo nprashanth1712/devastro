@@ -1,7 +1,7 @@
 import requests
 import json
 import base64
-from IPython import display, SVG
+
 
 ASTRO_API_KEY = "dfa2b8e6-d4f5-584a-b08c-e0a1e0150047"
 
@@ -466,7 +466,7 @@ def get_nakshatra_vastu_details(nakshatra):
         print(f"Error calling API: {e}")
         return None
 
-def get_chart_img(dob, tob, lat, lon):
+"""def get_chart_img(dob, tob, lat, lon):
     base_url = "https://api.vedicastroapi.com/v3-json/horoscope/chart-image"
     params = {
         "dob": dob,
@@ -487,11 +487,11 @@ def get_chart_img(dob, tob, lat, lon):
         response = requests.get(base_url, params=params)
         response.raise_for_status() # Raises HTTPError for 4xx and 5xx responses
         # Directly display the SVG content
-        display(SVG(data=response.content))
+        #display(SVG(data=response.content))
     except requests.exceptions.RequestException as e:
         print(f"An error occurred: {e}")
         print(f"Response status code: {response.status_code}")
-        print(f"Response content: {response.text}")
+        print(f"Response content: {response.text}")"""
 
 
 def get_ashtakvarga(dob,tob,lat,lon):
