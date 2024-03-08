@@ -2641,11 +2641,6 @@ function_dispatch_table = {
 }
 
 assistant_id = "asst_Rr5fZne22yP1TWUIoUzp2OKn" 
-my_updated_assistant = client.beta.assistants.update(
-   assistant_id,
-   tools=tools
-)
-
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16) 
 # Setting a secret key for session management  store secret keys in environment variables or secure configuration files that are not included in the source code repository.
