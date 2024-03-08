@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 import secrets
 #from newtools_v1 import tools
 #from functions2_v1 import *
+from datetime import datetime
 from werkzeug.exceptions import BadRequest, InternalServerError
 import json
 import base64
@@ -608,6 +609,26 @@ tools = [
                     }
                 },
                 "required": ["dob", "tob", "lat", "lon"]
+            }
+        }
+    },
+    {
+       "type": "function",
+       "function": {
+           "name": "get_current_date_time",
+           "description": "Fetches the current date and time.",
+           "returns": {
+                "type": "object",
+                "properties": {
+                   "current_date": {
+                      "type": "string",
+                      "description": "Current Date - DD/MM/YYYY"
+                    },
+                    "current_time": {
+                      "type": "string",
+                      "description": "Current Time - HH:MM"
+                    }
+                }
             }
         }
     },
@@ -2014,6 +2035,15 @@ tools = [
 
 ASTRO_API_KEY = "dfa2b8e6-d4f5-584a-b08c-e0a1e0150047"
 
+
+
+def get_current_date_time():
+    now = datetime.now()
+    current_date = now.strftime("%d/%m/%Y")
+    current_time = now.strftime("%H:%M")
+    return current_date, current_time
+
+
 def get_astro_dosh(dosh_type, dob, tob, lat, lon):
     base_url = f"https://api.vedicastroapi.com/v3-json/dosha/{dosh_type}"
     
@@ -2466,7 +2496,6 @@ def get_nakshatra_vastu_details(nakshatra):
         print(f"Error calling API: {e}")
         return None
 
-
 def get_chart_img(dob, tob, lat, lon):
     base_url = "https://api.vedicastroapi.com/v3-json/horoscope/chart-image"
     params = {
@@ -2553,9 +2582,6 @@ def get_western_planets(dob,tob,lat,lon):
         return None
 
 
-
-
-
 load_dotenv()
 
 api_key = os.getenv('OPENAI_API_KEY')
@@ -2636,11 +2662,16 @@ function_dispatch_table = {
     "get_western_planets":get_western_planets,
     "get_binnashtakvarga":get_binnashtakvarga,
     "get_ashtakvarga":get_ashtakvarga,
-    "get_chart_img":get_chart_img
+    "get_chart_img":get_chart_img,
+    "get_current_date_time":get_current_date_time
 
 }
 
 assistant_id = "asst_Rr5fZne22yP1TWUIoUzp2OKn" 
+my_updated_assistant = client.beta.assistants.update(
+   assistant_id,
+   tools=tools
+)
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16) 
 # Setting a secret key for session management  store secret keys in environment variables or secure configuration files that are not included in the source code repository.
