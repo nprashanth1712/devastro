@@ -22,7 +22,7 @@ client = OpenAI(api_key=api_key)
 ASTRO_API_KEY = os.getenv('ASTRO_API_KEY', 'dfa2b8e6-d4f5-584a-b08c-e0a1e0150047')
 
 
-tools_list = tools
+tools = tools
 
 function_dispatch_table = {
     "get_mangal_dosh_api": get_mangal_dosh_api,
