@@ -597,6 +597,26 @@ tools = [
         }
     },
     {
+       "type": "function",
+       "function": {
+           "name": "get_current_date_time",
+           "description": "Fetches the current date and time.",
+           "returns": {
+                "type": "object",
+                "properties": {
+                   "current_date": {
+                      "type": "string",
+                      "description": "Current Date - DD/MM/YYYY"
+                    },
+                    "current_time": {
+                      "type": "string",
+                      "description": "Current Time - HH:MM"
+                    }
+                }
+            }
+        }
+    },
+    {
         "type": "function",
         "function": {
             "name": "extended_kundli_details",
