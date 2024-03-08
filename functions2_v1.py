@@ -5,6 +5,15 @@ from IPython import display, SVG
 
 ASTRO_API_KEY = "dfa2b8e6-d4f5-584a-b08c-e0a1e0150047"
 
+from datetime import datetime
+
+def get_current_date_time():
+    now = datetime.now()
+    current_date = now.strftime("%d/%m/%Y")
+    current_time = now.strftime("%H:%M")
+    return current_date, current_time
+
+
 def get_astro_dosh(dosh_type, dob, tob, lat, lon):
     base_url = f"https://api.vedicastroapi.com/v3-json/dosha/{dosh_type}"
     
