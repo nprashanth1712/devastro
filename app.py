@@ -2524,6 +2524,7 @@ function_dispatch_table = {
     "get_binnashtakvarga":get_binnashtakvarga,
     "get_ashtakvarga":get_ashtakvarga,
     "get_chart_img":get_chart_img,
+    "get_current_date_time":get_current_date_time
 }
 
 
