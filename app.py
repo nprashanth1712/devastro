@@ -4,7 +4,7 @@ from openai import OpenAI
 import requests
 import os
 import time
-#from dotenv import load_dotenv
+from dotenv import load_dotenv
 import secrets
 #from newtools_v1 import tools
 #from functions2_v1 import *
