@@ -10,7 +10,8 @@ from datetime import datetime
 def get_current_date_time():
     now = datetime.now()
     current_date = now.strftime("%d/%m/%Y")
-    return current_date
+    current_time = now.strftime("%H:%M")
+    return current_date, current_time
 
 
 def get_astro_dosh(dosh_type, dob, tob, lat, lon):
