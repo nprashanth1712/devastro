@@ -600,7 +600,7 @@ tools = [
       "type": "function",
       "function": {
         "name": "get_current_date_time",
-         "description": "Fetches the current date."
+         "description": "Fetches the current date and current time."
       }
     },
     {
