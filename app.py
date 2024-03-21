@@ -91,7 +91,7 @@ function_dispatch_table = {
     # Add other functions here as needed
 }
 
-assistant_id = "asst_jQ4y0YAVcNuKnE6MntHBNKkE"  # Use your actual assistant ID
+assistant_id = "asst_Rr5fZne22yP1TWUIoUzp2OKn"  # Use your actual assistant ID
 my_updated_assistant = client.beta.assistants.update(
    assistant_id,
    tools=tools
