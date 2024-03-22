@@ -1865,8 +1865,9 @@ tools = [
                         "description": "Zodiac sign number (1-12)"
                     },
                     "week": {
-                        "type": "string",
-                        "description": "Week in DD/MM/YYYY format"
+                    "type": "string",
+                    "description": "Week for which predictions are needed",
+                    "enum": ["thisweek", "nextweek"]
                     }
                 },
                 "required": ["zodiac", "week"]
@@ -1886,8 +1887,9 @@ tools = [
                         "description": "Zodiac sign number (1-12)"
                     },
                     "week": {
-                        "type": "string",
-                        "description": "Week in DD/MM/YYYY format"
+                    "type": "string",
+                    "description": "Week for which predictions are needed",
+                    "enum": ["thisweek", "nextweek"]
                     }
                 },
                 "required": ["zodiac", "week"]
