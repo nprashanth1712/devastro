@@ -635,35 +635,6 @@ tools = [
     {
         "type": "function",
         "function": {
-            "name": "get_chart_img",
-            "description": "Fetches chart image of the Kundli based on birth details.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "dob": {
-                        "type": "string",
-                        "description": "Date of Birth - DD/MM/YYYY"
-                    },
-                    "tob": {
-                        "type": "string",
-                        "description": "Time of Birth - HH:MM"
-                    },
-                    "lat": {
-                        "type": "number",
-                        "description": "Latitude with decimals"
-                    },
-                    "lon": {
-                        "type": "number",
-                        "description": "Longitude with decimals"
-                    }
-                },
-                "required": ["dob", "tob", "lat", "lon"]
-            }
-        }
-    },
-    {
-        "type": "function",
-        "function": {
             "name": "sade_sati_table",
             "description": "Fetches the Sade Sati table based on birth details.",
             "parameters": {
