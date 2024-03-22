@@ -467,34 +467,6 @@ def get_nakshatra_vastu_details(nakshatra):
         print(f"Error calling API: {e}")
         return None
 
-def get_chart_img(dob, tob, lat, lon):
-    base_url = "https://api.vedicastroapi.com/v3-json/horoscope/chart-image"
-    params = {
-        "dob": dob,
-        "tob": tob,
-        "lat": lat,
-        "lon": lon,
-        "div": "D1",
-        "style": "north",
-        "color": "#ff3366",
-        "font_size":7,
-        "size":210,
-        "stroke":2,
-        "tz": 5.5,
-        "api_key": ASTRO_API_KEY,
-        "lang": "en"
-    }
-    try:
-        response = requests.get(base_url, params=params)
-        response.raise_for_status() # Raises HTTPError for 4xx and 5xx responses
-        # Directly display the SVG content
-        print(response)
-    except requests.exceptions.RequestException as e:
-        print(f"An error occurred: {e}")
-        print(f"Response status code: {response.status_code}")
-        print(f"Response content: {response.text}")
-
-
 def get_ashtakvarga(dob,tob,lat,lon):
     base_url = "https://api.vedicastroapi.com/v3-json/horoscope/ashtakvarga"
     params = {
